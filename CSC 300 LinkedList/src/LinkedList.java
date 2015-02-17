@@ -98,8 +98,20 @@ public class LinkedList
 		}
 	}
 	
+	public void printOdds()
+	{
+		Node currNode = this.head;
+		while (currNode != null);
+		{
+			if (currNode.getPayload() % 2 == 1)
+			{
+				System.out.println(currNode.getPayload());
+			}
+			currNode = currNode.getNextNode();
+		}
+	}
+	
 	public int count()
-
 	{
 		/*if (head == null)
 		{

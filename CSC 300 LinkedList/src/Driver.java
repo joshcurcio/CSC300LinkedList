@@ -13,5 +13,6 @@ public class Driver
 		
 		ll.addAtIndex(7, 1);
 		ll.display();
+		ll.printOdds();
 	}
 }
