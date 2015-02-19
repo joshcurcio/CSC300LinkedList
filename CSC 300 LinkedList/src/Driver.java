@@ -21,7 +21,7 @@ public class Driver
 		{
 			System.out.println(ll.removeFront());
 			System.out.println(ll.removeEnd());
-			System.out.println(ll.removeIndex(4));
+			System.out.println(ll.removeIndex(1));
 		}
 		catch(Exception e)
 		{
