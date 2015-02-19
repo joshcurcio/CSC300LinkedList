@@ -149,4 +149,83 @@ public class LinkedList
 			return curr.getPayload();
 		}
 	}
+	
+	public int removeFront() throws Exception
+	{
+		Node currNode = this.head;
+		if (head == null)
+		{
+			throw new Exception("Can Not Remove Front: Empty List");
+		}
+		head = head.getNextNode();
+		currNode.setNextNode(null);
+		this.count--;
+		return currNode.getPayload();	
+	}
+	
+	public int removeEnd() throws Exception
+	{
+		Node currNode = this.head;
+		Node nextNode = currNode.getNextNode();
+		if (head == null)
+		{
+			throw new Exception("Can Not Remove End: Empty List");
+		}
+		else if(count == 1)
+		{
+			return this.removeFront();
+		}
+		else
+		{
+			for(int i = 0; i < this.count-1; i++)
+			{
+				if (i == this.count-2)
+				{
+					currNode.setNextNode(null);
+					break;
+				}
+				if(i <= this.count - 2)
+				{
+					currNode = currNode.getNextNode();
+					nextNode = nextNode.getNextNode();
+				}
+				
+			}
+			count--;
+			return nextNode.getPayload();
+		}
+	}
+	public int removeIndex(int index) throws Exception
+	{
+		Node currNode = this.head;
+		Node nextNode = currNode.getNextNode();
+		if (head == null)
+		{
+			throw new Exception("Can Not Remove Front: Empty List");
+		}
+		if (index == 0)
+		{
+			return this.removeFront();
+		}
+		else if(index == this.count - 1)
+		{
+			return this.removeEnd();
+		}
+		else
+		{
+			for(int i = 0; i < this.count - 1; i++)
+			{
+				if(i == index - 1)
+				{
+					currNode.setNextNode(nextNode.getNextNode());
+				}
+				if(i <= index - 2)
+				{
+					currNode = currNode.getNextNode();
+					nextNode = nextNode.getNextNode();
+				}
+			}
+			return nextNode.getPayload();
+		}
+	}
 }
