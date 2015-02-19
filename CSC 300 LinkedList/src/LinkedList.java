@@ -4,11 +4,19 @@ public class LinkedList
 	private Node head;
 	private int count;
 	
+	//upgrade our LinkedList to such that there is a pointer called tail
+	//that points to the end of the list, and each node, knows about the
+	//previous Node. So you need to update all the add methods, all the 
+	//remove methods, and finally re-write displayInRevers to take advantage
+	//of our new double-linked list
+	
+	
 	public LinkedList()
 	{
 		this.head = null;
 		this.count = 0;
 	}
+	
 	public void display()
 	{
 		if(head == null)
@@ -26,6 +34,23 @@ public class LinkedList
 			System.out.println(currNode.getPayload() + "-> null");
 		}
 	}
+	
+	public void displayInReverse()
+	{
+		for(int i = this.count - 1; i >= 0; i--)
+		{
+			System.out.print(this.get(i) + "->");
+		}
+		System.out.println(" null");
+		
+		/*LinkedList temp = new LinkedList();
+		for(int i = 0; i < this.count; i++)
+		{
+			temp.addBegin(this.get(i));
+		}
+		temp.display();*/
+	}
+	
 	public void addEnd(int payload)
 	{
 		Node n = new Node(payload);
@@ -127,7 +152,8 @@ public class LinkedList
 				curr = curr.getNextNode();
 			}
 			return sum;
-		}*/
+		}
+		*/
 		return count;
 	}
 
@@ -165,8 +191,7 @@ public class LinkedList
 	
 	public int removeEnd() throws Exception
 	{
-		Node currNode = this.head;
-		Node nextNode = currNode.getNextNode();
+		
 		if (head == null)
 		{
 			throw new Exception("Can Not Remove End: Empty List");
@@ -177,55 +202,52 @@ public class LinkedList
 		}
 		else
 		{
-			for(int i = 0; i < this.count-1; i++)
+			Node currNode = this.head;
+			for(int i = 1; i < this.count-1; i++)
 			{
-				if (i == this.count-2)
-				{
-					currNode.setNextNode(null);
-					break;
-				}
-				if(i <= this.count - 2)
-				{
-					currNode = currNode.getNextNode();
-					nextNode = nextNode.getNextNode();
-				}
-				
+				currNode = currNode.getNextNode();
 			}
+			int payloadToReturn = currNode.getNextNode().getPayload();
+			currNode.setNextNode(null);
 			count--;
-			return nextNode.getPayload();
+			return payloadToReturn;
 		}
 	}
+	
 	public int removeIndex(int index) throws Exception
 	{
-		Node currNode = this.head;
-		Node nextNode = currNode.getNextNode();
 		if (head == null)
 		{
-			throw new Exception("Can Not Remove Front: Empty List");
+			throw new Exception("Can Not At Index: Empty List");
 		}
-		if (index == 0)
+		else if(index < 0 || index > this.count -1)
 		{
-			return this.removeFront();
-		}
-		else if(index == this.count - 1)
-		{
-			return this.removeEnd();
+			throw new Exception("Can Not At Index: Index Out of Bounds: " + index);
 		}
 		else
 		{
-			for(int i = 0; i < this.count - 1; i++)
+			if (index == 0)
 			{
-				if(i == index - 1)
-				{
-					currNode.setNextNode(nextNode.getNextNode());
-				}
-				if(i <= index - 2)
+				return this.removeFront();
+			}
+			else if(index == this.count - 1)
+			{
+				return this.removeEnd();
+			}
+			else
+			{
+				Node currNode = this.head;
+				for(int i = 1; i < index - 1; i++)
 				{
 					currNode = currNode.getNextNode();
-					nextNode = nextNode.getNextNode();
 				}
+				int payloadToReturn = currNode.getNextNode().getPayload();
+				Node nextNode = currNode.getNextNode().getNextNode();
+				currNode.getNextNode().setNextNode(null);
+				currNode.setNextNode(nextNode);
+				
+				return payloadToReturn;
 			}
-			return nextNode.getPayload();
 		}
 	}
 }

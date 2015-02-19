@@ -2,7 +2,7 @@
 public class Driver 
 {
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		LinkedList ll = new LinkedList();
 		
@@ -16,18 +16,7 @@ public class Driver
 		ll.addEnd(10);
 
 		ll.display();
-		
-		try
-		{
-			System.out.println(ll.removeFront());
-			System.out.println(ll.removeEnd());
-			System.out.println(ll.removeIndex(1));
-		}
-		catch(Exception e)
-		{
-			System.out.println("Failed to Remove");
-		}
-		
+		ll.removeIndex(4);
 		ll.display();
 	}
 }
