@@ -11,6 +11,7 @@ public class Driver
 		ll.addEnd(3);
 		ll.addEnd(5);
 		ll.addEnd(9);
+		ll.addAtIndex(4, 3);
 
 		ll.display();
 		ll.displayInReverse();

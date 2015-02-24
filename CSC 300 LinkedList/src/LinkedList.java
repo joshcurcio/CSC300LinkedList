@@ -51,30 +51,7 @@ public class LinkedList
 		}
 		temp.display();*/
 	}
-	
-	public void addEnd(int payload)
-	{
-		Node n = new Node(payload);
-		if(this.head == null)
-		{
-			this.head = n;
-		}
-		else
-		{
-			//find the last node in the list
-			Node currNode = this.head;
-			while(currNode.getNextNode() != null)
-			{
-				currNode = currNode.getNextNode();
-			}
-			//currNode will point to the very last Node in the list
-			n.setPreviousNode(currNode);
-			currNode.setNextNode(n);
-			tail = n;
-		}
-		this.count++;
-	}
-	
+		
 	public void addBegin (int payload)
 	{
 		Node n = new Node(payload);
@@ -95,8 +72,6 @@ public class LinkedList
 	
 	public void addAtIndex(int payload, int index)
 	{
-		Node currNode = this.head;
-		
 		if (index <= 0)
 		{
 			this.addBegin(payload);
@@ -107,19 +82,38 @@ public class LinkedList
 		}
 		else
 		{
+			Node currNode = this.head;
 			Node n = new Node(payload);
-			System.out.println(index);
-			for (int i = 0; i < index - 1; i++)
+			
+			for (int i = 0; i < index; i++)
 			{
 				currNode = currNode.getNextNode();
 			}
 			
+			n.setNextNode(currNode);
 			n.setPreviousNode(currNode.getPreviousNode());
-			n.setNextNode(currNode.getNextNode());
-			currNode.setNextNode(n);
+			currNode.setPreviousNode(n);
+			n.getPreviousNode().setNextNode(n);
 			
 			this.count++;
 		}
+	}
+	
+	public void addEnd(int payload)
+	{
+		Node n = new Node(payload);
+		if(this.head == null)
+		{
+			this.head = n;
+			this.tail = n;
+		}
+		else
+		{
+			tail.setNextNode(n);
+			n.setPreviousNode(tail);
+			tail = n;
+		}
+		this.count++;
 	}
 	
 	public void printOdds()
@@ -177,41 +171,26 @@ public class LinkedList
 	
 	public int removeFront() throws Exception
 	{
-		Node currNode = this.head;
 		if (head == null)
 		{
 			throw new Exception("Can Not Remove Front: Empty List");
 		}
-		head = head.getNextNode();
-		currNode.setNextNode(null);
-		head.setPreviousNode(null);
-		this.count--;
-		return currNode.getPayload();	
-	}
-	
-	public int removeEnd() throws Exception
-	{
-		
-		if (head == null)
+		else if (this.count == 1)
 		{
-			throw new Exception("Can Not Remove End: Empty List");
-		}
-		else if(count == 1)
-		{
-			return this.removeFront();
+			int payloadToReturn = this.head.getPayload();
+			this.head = null;
+			this.tail = null;
+			this.count--;
+			return payloadToReturn;
 		}
 		else
 		{
-			Node currNode = this.head;
-			for(int i = 1; i < this.count-1; i++)
-			{
-				currNode = currNode.getNextNode();
-			}
-			int payloadToReturn = currNode.getNextNode().getPayload();
-			currNode.setNextNode(null);
-			tail = currNode;
-			count--;
-			return payloadToReturn;
+			Node curr = head;
+			curr.getNextNode().setPreviousNode(null);
+			head = curr.getNextNode();
+			curr.setNextNode(null);
+			this.count--;
+			return curr.getPayload();	
 		}
 	}
 	
@@ -238,16 +217,39 @@ public class LinkedList
 			else
 			{
 				Node currNode = this.head;
-				for(int i = 1; i < index; i++)
+				for(int i = 0; i < index; i++)
 				{
 					currNode = currNode.getNextNode();
 				}
-				int payloadToReturn = currNode.getPreviousNode().getPayload();
-				Node nextNode = currNode.getNextNode().getNextNode();
-				currNode.getNextNode().setNextNode(null);
-				currNode.setNextNode(nextNode);
-				return payloadToReturn;
+				currNode.getPreviousNode().setNextNode(currNode.getNextNode());
+				currNode.getNextNode().setPreviousNode(currNode.getPreviousNode());
+				currNode.setPreviousNode(null);
+				currNode.setNextNode(null);
+				this.count--;
+				return currNode.getPayload();
 			}
 		}
 	}
+	
+	public int removeEnd() throws Exception
+	{
+		
+		if (head == null)
+		{
+			throw new Exception("Can Not Remove End: Empty List");
+		}
+		else if(count == 1)
+		{
+			return this.removeFront();
+		}
+		else
+		{
+			Node curr = this.tail;
+			tail = curr.getPreviousNode();
+			curr.setPreviousNode(null);
+			tail.setNextNode(null);
+			return curr.getPayload();
+		}
+	}
+
 }

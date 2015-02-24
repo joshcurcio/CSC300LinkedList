@@ -1,4 +1,4 @@
-
+//Josh
 public class Node 
 {
 	private Node nextNode;
