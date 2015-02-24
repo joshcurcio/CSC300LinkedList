@@ -5,13 +5,6 @@ public class LinkedList
 	private Node tail;
 	private int count;
 	
-	//upgrade our LinkedList to such that there is a pointer called tail
-	//that points to the end of the list, and each node, knows about the
-	//previous Node. So you need to update all the add methods, all the 
-	//remove methods, and finally re-write displayInRevers to take advantage
-	//of our new double-linked list
-	
-	
 	public LinkedList()
 	{
 		this.head = null;
