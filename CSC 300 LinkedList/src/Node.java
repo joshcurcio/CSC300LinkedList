@@ -11,7 +11,7 @@ public class Node
 		this.nextNode = null;
 		this.prevNode = null;
 	}
- 
+	
 	public Node getNextNode() 
 	{
 		return this.nextNode;
