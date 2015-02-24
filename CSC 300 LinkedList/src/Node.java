@@ -1,6 +1,7 @@
 //Josh
 public class Node 
 {
+	//josh
 	private Node nextNode;
 	private Node prevNode;
 	private int payload;
