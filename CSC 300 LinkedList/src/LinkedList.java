@@ -2,6 +2,7 @@
 public class LinkedList 
 {
 	private Node head;
+	private Node tail;
 	private int count;
 	
 	//upgrade our LinkedList to such that there is a pointer called tail
@@ -14,6 +15,7 @@ public class LinkedList
 	public LinkedList()
 	{
 		this.head = null;
+		this.tail = null;
 		this.count = 0;
 	}
 	
@@ -37,11 +39,17 @@ public class LinkedList
 	
 	public void displayInReverse()
 	{
-		for(int i = this.count - 1; i >= 0; i--)
+		Node currNode = this.tail;
+		while (currNode.getNextNode() != null)
 		{
-			System.out.print(this.get(i) + "->");
+			currNode = currNode.getNextNode();
 		}
-		System.out.println(" null");
+		while(currNode.getPreviousNode() != null)
+		{
+			System.out.print(currNode.getPayload() + "->");
+			currNode = currNode.getPreviousNode();
+		}
+		System.out.println(currNode.getPayload() + "-> null");
 		
 		/*LinkedList temp = new LinkedList();
 		for(int i = 0; i < this.count; i++)
@@ -67,7 +75,9 @@ public class LinkedList
 				currNode = currNode.getNextNode();
 			}
 			//currNode will point to the very last Node in the list
+			n.setPreviousNode(currNode);
 			currNode.setNextNode(n);
+			tail = n;
 		}
 		this.count++;
 	}
@@ -79,46 +89,42 @@ public class LinkedList
 		if(this.head == null)
 		{
 			this.head = n;
+			this.tail = n;
 		}
 		else
 		{
-			Node currNode = this.head;
-			currNode.getNextNode();
+			this.head.setPreviousNode(n);
+			n.setNextNode(head);
 			this.head = n;
-			n.setNextNode(currNode);
 		}
 		this.count++;
 	}
 	
 	public void addAtIndex(int payload, int index)
 	{
-		index = index - 1;
-		if (index < 0)
+		Node currNode = this.head;
+		
+		if (index <= 0)
 		{
 			this.addBegin(payload);
 		}
-		else if(index > count() - 1)
+		else if(index >= this.count)
 		{
 			this.addEnd(payload);
 		}
 		else
 		{
-			Node pastNode = this.head;
-			Node currNode = this.head;
 			Node n = new Node(payload);
-			
-			for (int i = 0; i < count(); i++)
+			System.out.println(index);
+			for (int i = 0; i < index - 1; i++)
 			{
-				
-					pastNode = currNode;
-					currNode = currNode.getNextNode();
-
-					if (i == index)
-					{
-						pastNode.setNextNode(n);
-						n.setNextNode(currNode);
-					}
+				currNode = currNode.getNextNode();
 			}
+			
+			n.setPreviousNode(currNode.getPreviousNode());
+			n.setNextNode(currNode.getNextNode());
+			currNode.setNextNode(n);
+			
 			this.count++;
 		}
 	}
@@ -185,6 +191,7 @@ public class LinkedList
 		}
 		head = head.getNextNode();
 		currNode.setNextNode(null);
+		head.setPreviousNode(null);
 		this.count--;
 		return currNode.getPayload();	
 	}
@@ -209,6 +216,7 @@ public class LinkedList
 			}
 			int payloadToReturn = currNode.getNextNode().getPayload();
 			currNode.setNextNode(null);
+			tail = currNode;
 			count--;
 			return payloadToReturn;
 		}
@@ -237,15 +245,14 @@ public class LinkedList
 			else
 			{
 				Node currNode = this.head;
-				for(int i = 1; i < index - 1; i++)
+				for(int i = 1; i < index; i++)
 				{
 					currNode = currNode.getNextNode();
 				}
-				int payloadToReturn = currNode.getNextNode().getPayload();
+				int payloadToReturn = currNode.getPreviousNode().getPayload();
 				Node nextNode = currNode.getNextNode().getNextNode();
 				currNode.getNextNode().setNextNode(null);
 				currNode.setNextNode(nextNode);
-				
 				return payloadToReturn;
 			}
 		}
