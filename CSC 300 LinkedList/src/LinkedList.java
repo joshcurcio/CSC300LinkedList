@@ -12,6 +12,7 @@ public class LinkedList
 		this.count = 0;
 	}
 	
+	
 	public void display()
 	{
 		if(head == null)
